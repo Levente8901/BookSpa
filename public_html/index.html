@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <style>
+
+            .container{overflow: hidden}
+            .tab{float: left;}
+            .tab-2{margin-left: 50px}
+            .tab-2 input{display: block;margin-bottom: 10px}
+            tr{transition:all .25s ease-in-out}
+            tr:hover{background-color:#EEE;cursor: pointer}
+        </style>
+
+    </head>
+    <body>
+
+        <div class="container">
+            <div class="tab tab-1">
+                <table id="table" border="1">
+                    <tr>
+                        <th>Szerző</th>
+                        <th>Cím</th>
+                    </tr>
+                </table>
+            </div>
+            <div class="tab tab-2">
+                Szerő :<input type="text" name="author" id="author">
+                Cím :<input type="text" name="title" id="title">
+
+                <button onclick="addHtmlTableRow();">Hozzáadás</button>
+                <button onclick="editHtmlTbleSelectedRow();">Szerkesztés</button>
+                <button onclick="removeSelectedRow();">Törlés</button>
+            </div>
+        </div>
+
+        <script>
+
+            var rIndex,
+                    table = document.getElementById("table");
+
+            function checkEmptyInput()
+            {
+                var isEmpty = false,
+                        author = document.getElementById("author").value,
+                        title = document.getElementById("title").value;
+
+                if (author === "") {
+                    alert("Szerző mező nem lehet üres!");
+                    isEmpty = true;
+                } else if (title === "") {
+                    alert("Cím mező nem lehet üres");
+                    isEmpty = true;
+                }
+                return isEmpty;
+            }
+
+
+            function addHtmlTableRow()
+            {
+                if (!checkEmptyInput()) {
+                    var newRow = table.insertRow(1),
+                            cell1 = newRow.insertCell(0),
+                            cell2 = newRow.insertCell(1),
+                            author = document.getElementById("author").value,
+                            title = document.getElementById("title").value;
+
+                    cell1.innerHTML = author;
+                    cell2.innerHTML = title;
+                    selectedRowToInput();
+                }
+            }
+
+            function selectedRowToInput()
+            {
+
+                for (var i = 1; i < table.rows.length; i++)
+                {
+                    table.rows[i].onclick = function ()
+                    {
+                        rIndex = this.rowIndex;
+                        document.getElementById("author").value = this.cells[0].innerHTML;
+                        document.getElementById("title").value = this.cells[1].innerHTML;
+                    };
+                }
+            }
+            selectedRowToInput();
+
+            function editHtmlTbleSelectedRow()
+            {
+                var author = document.getElementById("author").value,
+                        title = document.getElementById("title").value;
+
+                if (!checkEmptyInput()) {
+                    table.rows[rIndex].cells[0].innerHTML = author;
+                    table.rows[rIndex].cells[1].innerHTML = title;
+                }
+            }
+
+            function removeSelectedRow()
+            {
+                table.deleteRow(rIndex);
+                document.getElementById("author").value = "";
+                document.getElementById("title").value = "";
+            }
+        </script>
+
+    </body>
+</html>
